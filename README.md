@@ -25,9 +25,54 @@ docker kill --signal=SIGINT jaska_lidar
 ros2 bag play unitree_l2_mapping_data
 ros2 bag info unitree_l2_mapping_data
 
-# Mapping
+# Basic LIO
 ros2 bag play unitree_l2_mapping_data
 ros2 launch point_lio mapping_unilidar_l2.launch.py
 ```
 
-### Joystick controllerdocker run -d --name jaska_lidar --network host --privileged -v ~/haito_dev:/home/jetson/haito_dev -e ROS_DOMAIN_ID=1 -e RMW_IMPLEMENTATION=rmw_fastrtps_cpp -e ROS_AUTOMATIC_DISCOVERY_RANGE=SUBNET -v /dev:/dev ghcr.io/haitomatic/jaska-dev:base bash -c "source /home/jetson/haito_dev/ros2_ws/install/setup.bash && cd /home/jetson/haito_dev/jaska-dev/lidar_utils && ros2 launch unitree_lidar_ros2 launch.py record_bag:=true"
+### Mapping
+#### Installation
+*Install GTSAM (4.1.1)*
+```bash
+wget -O gtsam.zip https://github.com/borglab/gtsam/archive/refs/tags/4.1.1.zip
+unzip gtsam.zip
+cd gtsam-4.1.1/
+mkdir build && cd build
+cmake -DGTSAM_BUILD_WITH_MARCH_NATIVE=OFF -DGTSAM_USE_SYSTEM_EIGEN=ON ..
+sudo make install -j16
+```
+*Install TEASER++*
+```bash
+git clone https://github.com/MIT-SPARK/TEASER-plusplus.git
+cd TEASER-plusplus && mkdir build && cd build
+cmake .. -DENABLE_DIAGNOSTIC_PRINT=OFF
+sudo make install -j16
+sudo ldconfig
+```
+*Install TBB*
+```bash
+sudo apt install -y libtbb-dev
+```
+*Upstream components*
+```
+git clone https://github.com/mvu20002/Localization-QN.git
+git clone https://github.com/mvu20002/SAM-QN.git
+git clone https://github.com/illusionaryshelter/Quatro.git
+git clone https://github.com/illusionaryshelter/nano_gicp.git
+```
+
+#### Build
+```
+colcon build --symlink-install
+source install/setup.bash
+```
+
+#### Execution
+```
+ros2 launch jaska_dev mapping.launch.py
+# another terminal
+ros2 bag play <path_to_ros2_bag>
+```
+
+
+### Joystick controller
