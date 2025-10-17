@@ -14,7 +14,7 @@ def generate_launch_description():
 
   jaska_dev_dir = get_package_share_directory('jaska_dev')
 
-  localization_config = os.path.join(jaska_dev_dir, 'config', 'localization_indoor.yaml')
+  localization_config = os.path.join(jaska_dev_dir, 'config', 'localization.yaml')
 
   localization_node = Node(
     package='localization_qn',

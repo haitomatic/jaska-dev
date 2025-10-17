@@ -55,20 +55,22 @@ sudo apt install -y libtbb-dev
 ```
 *Upstream components*
 ```
-git clone https://github.com/mvu20002/Localization-QN.git
-git clone https://github.com/mvu20002/SAM-QN.git
+git clone https://github.com/haitomatic/Localization-QN.git
+git clone https://github.com/haitomatic/SAM-QN.git
 git clone https://github.com/illusionaryshelter/Quatro.git
 git clone https://github.com/illusionaryshelter/nano_gicp.git
 ```
 
 #### Build
 ```
+rosdep update
+rosdep install --from-paths src --ignore-src -r -y
 colcon build --symlink-install
-source install/setup.bash
 ```
 
 #### Execution
 ```
+source install/setup.bash
 ros2 launch jaska_dev mapping.launch.py
 # another terminal
 ros2 bag play <path_to_ros2_bag>

@@ -14,14 +14,14 @@ def generate_launch_description():
 
   jaska_dev_dir = get_package_share_directory('jaska_dev')
 
-  mapping_config_path = os.path.join(jaska_dev_dir, 'config', 'mapping_config.yaml')
+  mapping_config_path = os.path.join(jaska_dev_dir, 'config', 'mapping.yaml')
   with open(mapping_config_path, 'r') as file:
-    mappingConfigParams = yaml.safe_load(file)['sam-qn-node']['ros__parameters']
+    mappingConfigParams = yaml.safe_load(file)['sam_qn_node']['ros__parameters']
 
   mapping_mode = Node(
     package='sam-qn',
     executable='sam-qn_node',
-    name='sam-qn_node',
+    name='sam_qn_node',
     output='screen',
     parameters=[mappingConfigParams],
     remappings=[
