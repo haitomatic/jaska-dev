@@ -2,7 +2,7 @@ sam_qn_node:
   ros__parameters:
     basic:
       map_frame: "map" # publish map frame
-      loop_update_hz: 2.0 # loop detection Hz
+      loop_update_hz: 1.0 # loop detection Hz
       vis_hz: 0.5 # visualization Hz
 
     keyframe:
@@ -13,15 +13,15 @@ sam_qn_node:
         # note: without Quatro, anyway scan-to-submap matching is performed, as that shows better performance
 
     loop:
-      loop_detection_radius: 150.0 # search radius (m) for loop detection
-      loop_detection_timediff_threshold: 1100.0 # time difference threshold (s) for loop detection
+      loop_detection_radius: 120.0 # search radius (m) for loop detection
+      loop_detection_timediff_threshold: 800.0 # time difference threshold (s) for loop detection
 
     quatro_nano_gicp_voxel_resolution: 0.2 # voxel resolution to use Quatro and Nano-GICP matching
     save_voxel_resolution: 0.3 #  voxel resolution to save map in .pcd format
 
     nano_gicp: # all values are from Nano-GICP official github (Direct LiDAR Odometry)
       thread_number: 0 # if 0, max number of core
-      icp_score_threshold: 1.0 # lower is more accurate, for loop detection
+      icp_score_threshold: 0.1 # lower is more accurate, for loop detection
       correspondences_number: 15
       max_iter: 50
       transformation_epsilon: 0.005
@@ -33,7 +33,7 @@ sam_qn_node:
     quatro: # all values are from Quatro official github
       enable: true # whether or not to use quatro, if false -> FAST-LIO-SAM-N (Nano-GICP only)
       optimize_matching: true # whether or not to use Optimized matching
-      distance_threshold: 150.0 # when optimized matching, use only correspondences within this radius, unit [meter]
+      distance_threshold: 120.0 # when optimized matching, use only correspondences within this radius, unit [meter]
       max_correspondences: 300 # max correspondences to use for optimized matching
       fpfh_normal_radius: 0.6 # It should be 2.5 - 3.0 * `quatro_nano_gicp_voxel_resolution`
       fpfh_radius: 1.0 # It should be 5.0 * `quatro_nano_gicp_voxel_resolution`
