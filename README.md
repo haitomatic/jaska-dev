@@ -241,5 +241,13 @@ rviz2 -d /home/haito/haito_dev/ros2_ws/src/jaska-dev/rviz/zed_stereo.rviz --ros-
 rviz2 -d /home/haito/haito_dev/ros2_ws/src/jaska-dev/rviz/zed_stereo.rviz --ros-args -p use_sim_time:=true
 ```
 
+#### SVO2 data recording
+```
+# Building data recording container image
+docker build -f Dockerfile.camera_python -t jaska-dev:camera-python .
 
-### Joystick controller
+# Run the recording container on Jaska
+xhost +
+export DISPLAY=:0  # require when running over ssh but has display connected
+docker run -it --rm --name jaska_camera   --gpus all   --runtime=nvidia   --privileged   --network=host   --ipc=host   --pid=host   -v /tmp/.X11-unix:/tmp/.X11-unix:rw   -v /dev:/dev   -v /tmp:/tmp   -v /home/user/.Xauthority:/root/.Xauthority:rw   -v /tmp/argus_socket:/tmp/argus_socket   -v /var/nvidia/nvcam/settings/:/var/nvidia/nvcam/settings/   -v /etc/systemd/system:/etc/systemd/system   -v /etc/systemd/system/zed_x_daemon.service:/etc/systemd/system/zed_x_daemon.service -v /usr/local/zed/resources:/usr/local/zed/resources -v /home/user/haito_dev/zedx_recording:/Jaska/zedx_recording  -e DISPLAY=$DISPLAY   -e XAUTHORITY=/root/.Xauthority   -e XDG_RUNTIME_DIR=/tmp/runtime-dir   jaska-dev:camera-python
+```
